@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-background text-gray-200 antialiased;
+  background-image:
+    radial-gradient(circle at 15% 50%, rgba(124, 58, 237, 0.08), transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(204, 255, 0, 0.05), transparent 25%);
+}
+
+.bento-card {
+  @apply bg-surface border border-white/5 rounded-3xl p-6 transition-all duration-300;
+}
+
+.bento-card:hover {
+  @apply border-white/10 shadow-2xl shadow-purple-900/10 transform -translate-y-1;
+}
+
+.btn-primary {
+  @apply bg-primary text-black font-bold px-6 py-3 rounded-xl hover:bg-primaryDim transition-all active:scale-95 shadow-neon-lime flex items-center justify-center gap-2;
+}
+
+.input-field {
+  @apply w-full bg-surfaceHighlight border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all font-mono text-sm;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
