@@ -97,25 +97,11 @@ export const GlobalProvider = ({ children }) => {
         }
 
         try {
-            await axios.post(`${API_URL}/transactions`, transaction, config);
-            // Re-fetch to ensure sync with backend date/ID logic
-            // But for optimization we use the response date from backend usually.
-            // Sticking to original logic but fixing the URL
-            const response = await axios.get(`${API_URL}/transactions`);
-            // Ideally we just push the response data, but to keep sorting consistent/simple:
-            // Actually original logic was: dispatch ADD with response data.
-            // Let's stick to that but ensure we use the response.
-
-            // Re-reading original code logic:
-            // const response = await axios.post(..., transaction);
-            // dispatch(..., payload: response.data.data);
-
-            // Re-implementing correctly:
-            const postResponse = await axios.post(`${API_URL}/transactions`, transaction, config);
+            const response = await axios.post(`${API_URL}/transactions`, transaction, config);
 
             dispatch({
                 type: 'ADD_TRANSACTION',
-                payload: postResponse.data.data
+                payload: response.data.data
             });
             return { success: true };
         } catch (err) {
