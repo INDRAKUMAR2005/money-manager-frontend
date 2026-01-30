@@ -10,7 +10,7 @@ const TransactionList = ({ limit }) => {
     const { transactions, deleteTransaction } = useContext(GlobalContext);
     const [editingTransaction, setEditingTransaction] = useState(null);
 
-    const sortedTransactions = transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+    const sortedTransactions = [...transactions].sort((a, b) => new Date(b.date) - new Date(a.date));
     const displayTransactions = limit ? sortedTransactions.slice(0, limit) : sortedTransactions;
 
     const handleEdit = (transaction) => {
@@ -28,7 +28,7 @@ const TransactionList = ({ limit }) => {
                 <AnimatePresence>
                     {displayTransactions.length === 0 && (
                         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center text-gray-600 py-10 font-mono text-sm">
-                // NO TRANSACTIONS FOUND
+                            NO TRANSACTIONS FOUND
                         </motion.p>
                     )}
 
@@ -48,8 +48,8 @@ const TransactionList = ({ limit }) => {
                                 <div className="flex items-center gap-4">
                                     {/* Icon Box */}
                                     <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl shadow-lg ${isExpense
-                                            ? 'bg-gradient-to-br from-expense/20 to-transparent text-expense shadow-expense/10'
-                                            : 'bg-gradient-to-br from-income/20 to-transparent text-income shadow-income/10'
+                                        ? 'bg-gradient-to-br from-expense/20 to-transparent text-expense shadow-expense/10'
+                                        : 'bg-gradient-to-br from-income/20 to-transparent text-income shadow-income/10'
                                         }`}>
                                         {isExpense ? '↓' : '↑'}
                                     </div>
@@ -59,8 +59,8 @@ const TransactionList = ({ limit }) => {
                                         <div className="flex items-center gap-2 mb-1">
                                             <h4 className="font-bold text-white text-sm tracking-wide">{transaction.category}</h4>
                                             <span className={`text-[10px] font-mono uppercase px-1.5 py-0.5 rounded border ${transaction.division === 'Office'
-                                                    ? 'border-purple-500/30 text-purple-400 bg-purple-500/10'
-                                                    : 'border-blue-500/30 text-blue-400 bg-blue-500/10'
+                                                ? 'border-purple-500/30 text-purple-400 bg-purple-500/10'
+                                                : 'border-blue-500/30 text-blue-400 bg-blue-500/10'
                                                 }`}>
                                                 {transaction.division === 'Office' ? <FaBriefcase className="inline mr-1 text-[8px]" /> : <FaUser className="inline mr-1 text-[8px]" />}
                                                 {transaction.division}

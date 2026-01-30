@@ -62,11 +62,17 @@ const AddTransactionModal = ({ isOpen, onClose, initialData = null, isEditMode =
         if (isEditMode && initialData) {
             result = await updateTransaction(initialData._id, newTransaction);
             if (result.success) toast.success("Updated Successfully");
-            else toast.error(result.error);
+            else {
+                const errorMsg = Array.isArray(result.error) ? result.error.join(', ') : result.error;
+                toast.error(errorMsg);
+            }
         } else {
             result = await addTransaction(newTransaction);
             if (result.success) toast.success("Added Successfully");
-            else toast.error(result.error);
+            else {
+                const errorMsg = Array.isArray(result.error) ? result.error.join(', ') : result.error;
+                toast.error(errorMsg);
+            }
         }
 
         if (result.success) {

@@ -12,10 +12,18 @@ const initialState = {
 export const GlobalContext = createContext(initialState);
 
 // Define API URL
-const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+// Define API URL
+const isLocal = window.location.hostname === 'localhost' ||
+    window.location.hostname === '127.0.0.1' ||
+    window.location.hostname.startsWith('192.168.') ||
+    window.location.hostname.startsWith('10.');
+
 const API_URL = isLocal
     ? 'http://localhost:5000/api/v1'
     : 'https://money-manager-backend.vercel.app/api/v1';
+
+console.log('Environment:', isLocal ? 'Local' : 'Production');
+console.log('API URL:', API_URL);
 
 // Reducer
 const AppReducer = (state, action) => {
@@ -44,7 +52,8 @@ const AppReducer = (state, action) => {
         case 'TRANSACTION_ERROR':
             return {
                 ...state,
-                error: action.payload
+                error: action.payload,
+                loading: false
             }
         default:
             return state;
@@ -97,7 +106,9 @@ export const GlobalProvider = ({ children }) => {
         }
 
         try {
+            console.log('Sending transaction to backend:', transaction);
             const response = await axios.post(`${API_URL}/transactions`, transaction, config);
+            console.log('Backend response:', response.data);
 
             dispatch({
                 type: 'ADD_TRANSACTION',
