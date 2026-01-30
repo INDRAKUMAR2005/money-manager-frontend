@@ -20,7 +20,7 @@ const isLocal = window.location.hostname === 'localhost' ||
 
 const API_URL = isLocal
     ? 'http://localhost:5000/api/v1'
-    : 'https://money-manager-backend.vercel.app/api/v1';
+    : 'https://money-manager-backend-woad.vercel.app/api/v1';
 
 console.log('Environment:', isLocal ? 'Local' : 'Production');
 console.log('API URL:', API_URL);
