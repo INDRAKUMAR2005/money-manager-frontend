@@ -12,7 +12,7 @@ const initialState = {
 export const GlobalContext = createContext(initialState);
 
 // Define API URL
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
+const API_URL = 'https://money-manager-backend.vercel.app/api/v1';
 
 // Reducer
 const AppReducer = (state, action) => {
