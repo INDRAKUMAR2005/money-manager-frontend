@@ -11,6 +11,9 @@ const initialState = {
 // Create context
 export const GlobalContext = createContext(initialState);
 
+// Define API URL
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
+
 // Reducer
 const AppReducer = (state, action) => {
     switch (action.type) {
@@ -52,7 +55,8 @@ export const GlobalProvider = ({ children }) => {
     // Actions
     async function getTransactions(params = {}) {
         try {
-            const response = await axios.get('http://localhost:5000/api/v1/transactions', { params });
+            // Updated to use dynamic API_URL
+            const response = await axios.get(`${API_URL}/transactions`, { params });
 
             dispatch({
                 type: 'GET_TRANSACTIONS',
@@ -68,7 +72,7 @@ export const GlobalProvider = ({ children }) => {
 
     async function deleteTransaction(id) {
         try {
-            await axios.delete(`http://localhost:5000/api/v1/transactions/${id}`);
+            await axios.delete(`${API_URL}/transactions/${id}`);
 
             dispatch({
                 type: 'DELETE_TRANSACTION',
@@ -90,11 +94,25 @@ export const GlobalProvider = ({ children }) => {
         }
 
         try {
-            const response = await axios.post('http://localhost:5000/api/v1/transactions', transaction, config);
+            await axios.post(`${API_URL}/transactions`, transaction, config);
+            // Re-fetch to ensure sync with backend date/ID logic
+            // But for optimization we use the response date from backend usually.
+            // Sticking to original logic but fixing the URL
+            const response = await axios.get(`${API_URL}/transactions`);
+            // Ideally we just push the response data, but to keep sorting consistent/simple:
+            // Actually original logic was: dispatch ADD with response data.
+            // Let's stick to that but ensure we use the response.
+
+            // Re-reading original code logic:
+            // const response = await axios.post(..., transaction);
+            // dispatch(..., payload: response.data.data);
+
+            // Re-implementing correctly:
+            const postResponse = await axios.post(`${API_URL}/transactions`, transaction, config);
 
             dispatch({
                 type: 'ADD_TRANSACTION',
-                payload: response.data.data
+                payload: postResponse.data.data
             });
             return { success: true };
         } catch (err) {
@@ -113,7 +131,7 @@ export const GlobalProvider = ({ children }) => {
             }
         }
         try {
-            const response = await axios.put(`http://localhost:5000/api/v1/transactions/${id}`, updatedTransaction, config);
+            const response = await axios.put(`${API_URL}/transactions/${id}`, updatedTransaction, config);
             dispatch({
                 type: 'UPDATE_TRANSACTION',
                 payload: response.data.data
